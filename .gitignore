@@ -1,0 +1,94 @@
+# ===========================================
+# NODE / GENERAL
+# ===========================================
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+.DS_Store
+Thumbs.db
+
+# Environment variables
+.env
+.env*.local
+
+# Logs
+logs/
+*.log
+*.pid
+*.seed
+*.pid.lock
+
+# Temp folders
+tmp/
+temp/
+
+# ===========================================
+# FRONTEND (Next.js)
+# ===========================================
+.next/
+out/
+.next-old/
+.next-tmp/
+
+# Tailwind / PostCSS cache
+.postcss-cache/
+*.css.map
+
+# Build artifacts
+dist/
+build/
+*.tsbuildinfo
+
+# ===========================================
+# BACKEND (Fastify + Prisma)
+# ===========================================
+# Prisma
+prisma/dev.db
+prisma/dev.db-journal
+prisma/migrations/*/migration.sql
+prisma/migrations/*.lock
+
+# Compiled JS
+backend/dist/
+
+# Puppeteer Chromium
+**/puppeteer/.local-chromium/
+**/puppeteer/chromium/
+**/chrome/
+chrome-data/
+.chromium/
+
+# ===========================================
+# DOCKER
+# ===========================================
+docker-compose.override.yml
+docker-data/
+*.tar
+
+# ===========================================
+# VSCode / IDEs
+# ===========================================
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+
+.idea/
+*.iml
+
+# ===========================================
+# OS-SPECIFIC
+# ===========================================
+ehthumbs.db
+desktop.ini
+
+# ===========================================
+# TEST / OUTPUT / CACHE
+# ===========================================
+coverage/
+__tests__/
+.cache/
+.parcel-cache/
+storybook-static/
