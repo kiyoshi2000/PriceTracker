@@ -4,7 +4,13 @@ import { itemRoutes } from "./routes/items";
 
 const app = fastify({ logger: true });
 
-app.register(cors, { origin: "*" });
+// CORS
+app.register(cors, {
+  origin: "*",
+  methods: ["GET", "POST", "DELETE"],
+});
+
+// Rotas
 app.register(itemRoutes);
 
 app.get("/", () => ({ status: "API online" }));

@@ -2,41 +2,33 @@ import puppeteer from "puppeteer";
 
 export async function scrapeAmazonProduct(url: string) {
   const browser = await puppeteer.launch({
-    headless: "new",
-    args: ["--no-sandbox"]
+    headless: "shell",
+    args: ["--no-sandbox", "--disable-setuid-sandbox"],
   });
 
   const page = await browser.newPage();
   await page.goto(url, { waitUntil: "networkidle2" });
 
-  await page.waitForSelector("#productTitle");
+  let name: string | null = null;
+  let price: number | null = null;
 
-  const name = await page.$eval("#productTitle", el =>
-    el.textContent.trim()
-  );
+  try {
+    name = await page.$eval("#productTitle", el =>
+      (el as HTMLElement).innerText.trim()
+    );
+  } catch {}
 
-  // Preço — Amazon ES/BR/US
-  let price = null;
+  try {
+    const priceText = await page.$eval(".a-price .a-offscreen", el =>
+      (el as HTMLElement).innerText.replace(/[^\d,\.]/g, "")
+    );
 
-  const selectors = [
-    "#priceblock_ourprice",
-    "#priceblock_dealprice",
-    ".a-price-whole"
-  ];
-
-  for (const sel of selectors) {
-    try {
-      const p = await page.$eval(sel, el => el.textContent.replace(/[^\d.,]/g, ""));
-      price = parseFloat(p.replace(".", "").replace(",", "."));
-      break;
-    } catch (_) {
-      // continua tentando
-    }
-  }
+    price = parseFloat(priceText.replace(",", "."));
+  } catch {}
 
   await browser.close();
 
-  if (!price) return null;
+  if (!name || !price) return null;
 
   return { name, price };
 }

@@ -28,7 +28,7 @@ cat << 'EOF' > backend/package.json
   },
   "dependencies": {
     "fastify": "^4.25.0",
-    "fastify-cors": "^8.3.0",
+    "@fastify/cors": "^8.5.0",
     "puppeteer": "^22.0.0",
     "node-cron": "^3.0.2",
     "nodemailer": "^6.9.10",
