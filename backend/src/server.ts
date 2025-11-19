@@ -1,31 +1,22 @@
-import Fastify from "fastify";
+import fastify from "fastify";
 import cors from "@fastify/cors";
+import { itemRoutes } from "./routes/items";
 
-import { initScheduler } from "./jobs/scheduler";
-import itemsRoutes from "./routes/items";
+const app = fastify({ logger: true });
 
-async function start() {
-  const app = Fastify({ logger: true });
+app.register(cors, { origin: "*" });
+app.register(itemRoutes);
 
-  // Registrar CORS (sem top-level await)
-  await app.register(cors, {
-    origin: "*",
-    methods: ["GET", "POST", "PUT", "DELETE"]
-  });
+app.get("/", () => ({ status: "API online" }));
 
-  // Registrar rotas
-  await app.register(itemsRoutes);
-
-  // Iniciar scheduler
-  initScheduler();
-
+const start = async () => {
   try {
     await app.listen({ port: 3001, host: "0.0.0.0" });
-    console.log("🚀 Backend running at http://localhost:3001");
+    console.log("🚀 Backend rodando em http://localhost:3001");
   } catch (err) {
     app.log.error(err);
     process.exit(1);
   }
-}
+};
 
 start();
