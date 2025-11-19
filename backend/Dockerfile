@@ -1,24 +1,45 @@
-FROM node:18
+FROM node:18-slim
+
+# Instalar dependências necessárias para o Chrome Headless
+RUN apt-get update && apt-get install -y \
+    ca-certificates \
+    fonts-liberation \
+    libasound2 \
+    libatk-bridge2.0-0 \
+    libatk1.0-0 \
+    libcups2 \
+    libdbus-1-3 \
+    libdrm2 \
+    libgbm1 \
+    libglib2.0-0 \
+    libgtk-3-0 \
+    libnspr4 \
+    libnss3 \
+    libu2f-udev \
+    libx11-6 \
+    libx11-xcb1 \
+    libxcb-dri3-0 \
+    libxcomposite1 \
+    libxdamage1 \
+    libxrandr2 \
+    wget \
+    xdg-utils \
+    --no-install-recommends
 
 WORKDIR /app
 
-# Copy dependency manifests
 COPY package*.json ./
 
-# Install only production deps first
 RUN npm install
 
-# Copy entire backend source
 COPY . .
 
-# Generate Prisma Client properly for Linux
+# Gerar client Prisma
 RUN npx prisma generate
 
-# Compile TypeScript
+# Compilar TypeScript
 RUN npm run build
 
-# Expose API port
 EXPOSE 3001
 
-# Start backend
-CMD ["npm", "start"]
+CMD ["npm", "run", "start"]
